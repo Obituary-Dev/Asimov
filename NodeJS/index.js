@@ -1,12 +1,10 @@
 const express = require("express");
 const marksController = require("./controllers/marksController");
+const usersController = require("./controllers/usersController");
 const router = require('./routes/router');
-require('./app/routes/auth.routes')(app);
-require('./app/routes/user.routes')(app);
 var app = express();
-var session = require('cookie-session');
+var session = require('express-session');
 var bodyParser = require('body-parser');
-const db = require("./models");
 
 //fun
 // accessible from ejs and js (everywhere)
@@ -17,9 +15,6 @@ app.locals.disciplines = {
     4: 'science',
     5: 'english'
 }
-// database
-const Role = db.role;
-db.sequelize.sync();
 
 app.use(express.static('views'));
 app.set('view engine', 'ejs');
