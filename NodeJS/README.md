@@ -1,0 +1,1 @@
+npm i body-parser cookie-session ejs express

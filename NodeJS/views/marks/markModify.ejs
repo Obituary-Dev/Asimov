@@ -1,0 +1,19 @@
+<%- include ("../header") -%>
+<h1>Modify a mark</h1>
+
+<form action="<%=(typeof editData!='undefined')?'/mark/edit/'+editData.Mark_Id:'/mark/create'%>" method="POST">
+    <p>
+        <label for="Mark_Value">Modify mark</label>
+        <input type="text" placeholder="Enter New Mark" id="Mark_Value" name="Mark_Value" required value="<%=(typeof editData!='undefined')? editData.Mark_Value:''%>">
+        <label for="Mark_Id_Discipline">discipline ?</label>
+        <select name="Mark_Id_Discipline" id="Mark_Id_Discipline">
+            <option value="1">Mathematics</option>
+            <option value="2">French</option>
+            <option value="3">Biology</option>
+            <option value="4">Science</option>
+            <option value="5">English</option>
+        </select>
+        <input type="submit" />
+    </p>
+</form>
+<%- include ("../footer") -%>
