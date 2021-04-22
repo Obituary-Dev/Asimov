@@ -137,11 +137,11 @@ CREATE TABLE IF NOT EXISTS `teacher` (
   `T_Username` varchar(70) NOT NULL,
   `T_Password` varchar(70) NOT NULL,
   `T_Id_Role` int NOT NULL,
-  `T_Id_Lesson` int NOT NULL,
+  `T_Id_Discipline` int NOT NULL,
   `T_Id_Promotion` int NOT NULL,
   PRIMARY KEY (`T_Id`),
   KEY `T_Id_Role` (`T_Id_Role`),
-  KEY `T_Id_Lesson` (`T_Id_Lesson`),
+  KEY `T_Id_Discipline` (`T_Id_Discipline`),
   KEY `T_Id_Promotion` (`T_Id_Promotion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -153,18 +153,18 @@ DROP TABLE IF EXISTS `promotion`;
 CREATE TABLE IF NOT EXISTS `promotion` (
   `Promo_Id` int NOT NULL AUTO_INCREMENT,
   `Promo_libelle` varchar(30) NOT NULL,
-  `Promo_annee` varchar(70) NOT NULL,
+  `Promo_Year` varchar(70) NOT NULL,
   `Promo_Id_Class` int NOT NULL,
   `Promo_Id_Lesson` int NOT NULL,
   `Promo_Id_Student` int NOT NULL,
   `Promo_Id_Mark` int NOT NULL,
   `Promo_Id_Teacher` int NOT NULL,
-  PRIMARY KEY (`T_Id`),
+  PRIMARY KEY (`Promo_Id`),
   KEY `Promo_Id_Class` (`Promo_Id_Class`),
   KEY `Promo_Id_Lesson` (`Promo_Id_Lesson`),
   KEY `Promo_Id_Student` (`Promo_Id_Student`),
   KEY `Promo_Id_Mark` (`Promo_Id_Mark`),
-  KEY `Promo_Id_Teacher` (`Promo_Id_Teacher`),
+  KEY `Promo_Id_Teacher` (`Promo_Id_Teacher`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -205,19 +205,19 @@ COMMIT;
 -- Constraints for table `lesson`
 --
 ALTER TABLE `lesson`
-  ADD CONSTRAINT `student_ibfk_1` FOREIGN KEY (`L_Id_Promotion`) REFERENCES `roles` (`Promo_Id`),
-  ADD CONSTRAINT `student_ibfk_2` FOREIGN KEY (`L_Id_Discipline`) REFERENCES `discipline` (`Dis_Id`);
+  ADD CONSTRAINT `lesson_ibfk_1` FOREIGN KEY (`L_Id_Promotion`) REFERENCES `promotion` (`Promo_Id`),
+  ADD CONSTRAINT `lesson_ibfk_2` FOREIGN KEY (`L_Id_Discipline`) REFERENCES `discipline` (`Dis_Id`);
 COMMIT;
 
 --
 -- Constraints for table `promotion`
 --
 ALTER TABLE `promotion`
-  ADD CONSTRAINT `promotion_ibfk_1` FOREIGN KEY (`Promo_Id_Class`) REFERENCES `classe` (`Role_Id`),
+  ADD CONSTRAINT `promotion_ibfk_1` FOREIGN KEY (`Promo_Id_Class`) REFERENCES `roles` (`Role_Id`),
   ADD CONSTRAINT `promotion_ibfk_2` FOREIGN KEY (`Promo_Id_Lesson`) REFERENCES `lesson` (`L_Id`),
   ADD CONSTRAINT `promotion_ibfk_3` FOREIGN KEY (`Promo_Id_Student`) REFERENCES `student` (`Stu_Id`),
   ADD CONSTRAINT `promotion_ibfk_4` FOREIGN KEY (`Promo_Id_Mark`) REFERENCES `mark` (`Mark_Id`),
-  ADD CONSTRAINT `promotion_ibfk_5` FOREIGN KEY (`Promo_Id_Teacher`) REFERENCES `teacher` (`Teacher_Id`);
+  ADD CONSTRAINT `promotion_ibfk_5` FOREIGN KEY (`Promo_Id_Teacher`) REFERENCES `teacher` (`T_Id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
