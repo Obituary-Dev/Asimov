@@ -18,6 +18,8 @@ router.get('/teacher', teachersController.teacherIndex);
 router.post('/login/student', studentsController.studentLogIn);
 router.get('/dashboard/student', studentsController.studentDashboard);
 router.get('/profile/student', studentsController.studentProfile);
+router.get('/marks/student', studentsController.studentMarksDisplay);
+
 
 router.post('/login/teacher', teachersController.teacherLogIn);
 router.get('/dashboard/teacher', teachersController.teacherDashboard);

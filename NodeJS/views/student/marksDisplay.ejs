@@ -1,0 +1,32 @@
+
+<%- include ("./studentHeader") -%>
+
+    <h1>Marks</h1>
+
+    <table>
+        <tr>
+            <th>mark</th>
+            <th>discipline</th>
+            <th>delete</th>
+            <th>edit</th>
+        </tr>
+
+        <% if(marksData.length!=0){ var i=1; marksData.forEach(function(data){ %>
+            <tr>
+                <td>
+                    <%=data.Mark_Value %>
+                </td>
+                <td>
+                    <%= disciplines[data.Mark_Id_Discipline]%>
+                </td>
+                <td><a href="/mark/delete/<%=data.Mark_Id%>">Delete</a></td>
+                <td><a href="/mark/edit/<%=data.Mark_Id%>">Edit</a></td>
+
+            </tr>
+            <% i++; }) %>
+                <% } else{ %>
+                    <tr>
+                        <td colspan="7">No Data Found</td>
+                    </tr>
+                    <% } %>
+    </table>

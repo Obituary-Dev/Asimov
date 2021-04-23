@@ -1,12 +1,14 @@
-<%- include ("../header") -%>
+<%- include ("./teacherHeader") -%>
     <h1>Marks</h1>
 
     <table>
         <tr>
-            <th>mark</th>
-            <th>discipline</th>
-            <th>delete</th>
-            <th>edit</th>
+            <th>mark </th>
+            <th>student </th>
+            <th>promotion </th>
+            <th>discipline </th>
+            <th>delete </th>
+            <th>edit </th>
         </tr>
 
         <% if(marksData.length!=0){ var i=1; marksData.forEach(function(data){ %>
@@ -14,6 +16,13 @@
                 <td>
                     <%=data.Mark_Value %>
                 </td>
+                <td>
+                    <%=data.Mark_Id_Student %>
+                </td>
+                <td>
+                    <%=data.Mark_Id_Promotion %>
+                </td>
+
                 <td>
                     <%= disciplines[data.Mark_Id_Discipline]%>
                 </td>
@@ -44,4 +53,3 @@
             <input type="submit" />
         </p>
     </form>
-    <%- include ("../footer") -%>

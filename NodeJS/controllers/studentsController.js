@@ -1,5 +1,4 @@
 var database = require('../models/database');
-
 const studentIndex =  (request, result, next) => {
     var message = '';
     result.render('./connect/student',{message: message});
@@ -65,9 +64,25 @@ const studentProfile = (req, res) => {
     });
 };
 
+const studentMarksDisplay = (request, result, next) => {
+   
+   var userId = request.session.userId;
+   console.log('user marks id= '+userId);
+   if(userId == null){
+      result.redirect("/");
+      return;
+   }
+   var sql="SELECT * FROM `mark` WHERE `Mark_Id_Student`='"+userId+"'";
+   database.query(sql, function (err, data, fields) {
+      if (err) throw err;
+      result.render('./student/marksDisplay.ejs', { title: 'Marks', marksData: data});
+   });
+};
+
 module.exports = {
     studentIndex,
     studentLogIn,
     studentProfile,
-    studentDashboard
+    studentDashboard,
+    studentMarksDisplay
 }
