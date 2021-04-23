@@ -1,7 +1,8 @@
 var database = require('../models/database');
+
 const studentIndex =  (request, result, next) => {
     var message = '';
-    result.render('./connect/student',{message: message});
+    result.render('./connect/connectStudent',{message: message});
 };
  
 const studentLogIn  = (request, result, next) => {
@@ -64,7 +65,7 @@ const studentProfile = (req, res) => {
     });
 };
 
-const studentMarksDisplay = (request, result, next) => {
+const studentMarksDisplayById = (request, result, next) => {
    
    var userId = request.session.userId;
    console.log('user marks id= '+userId);
@@ -75,14 +76,34 @@ const studentMarksDisplay = (request, result, next) => {
    var sql="SELECT * FROM `mark` WHERE `Mark_Id_Student`='"+userId+"'";
    database.query(sql, function (err, data, fields) {
       if (err) throw err;
-      result.render('./student/marksDisplay.ejs', { title: 'Marks', marksData: data});
+      result.render('./student/studentMarksDisplay.ejs', { title: 'Marks', marksData: data});
    });
 };
+
+const studentMarksDisplayByDiscipline = (request, result, next) => {
+   
+   var userId = request.session.userId;
+   var markIdDiscipline = request.body.Mark_Id_Discipline;
+   console.log('user marks id= '+userId);
+   console.log('user discipline id= '+markIdDiscipline);
+
+   if(userId == null){
+      result.redirect("/");
+      return;
+   }
+   var sql="SELECT * FROM `mark` WHERE `Mark_Id_Student`='"+userId+"' AND `Mark_Id_Discipline`='"+markIdDiscipline+"'";
+   database.query(sql, function (err, data, fields) {
+      if (err) throw err;
+      result.render('./student/studentMarksDisplay.ejs', { title: 'Marks', marksData: data});
+   });
+};
+
 
 module.exports = {
     studentIndex,
     studentLogIn,
     studentProfile,
     studentDashboard,
-    studentMarksDisplay
+    studentMarksDisplayById,
+    studentMarksDisplayByDiscipline
 }

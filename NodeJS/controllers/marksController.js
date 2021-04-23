@@ -6,7 +6,7 @@ const marksDisplay = (request, result, next) => {
     var sql='SELECT * FROM mark';
     database.query(sql, function (err, data, fields) {
         if (err) throw err;
-        result.render('./teacher/marksDisplay.ejs', { title: 'Marks', marksData: data});
+        result.render('./teacher/teacherMarksDisplay.ejs', { title: 'Marks', marksData: data});
       });
 };
 
