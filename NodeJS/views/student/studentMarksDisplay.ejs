@@ -1,40 +1,49 @@
 
 <%- include ("./studentHeader") -%>
 
-<h1>Marks</h1>
+<script>
+    function displayOnlyDisciplineMarks(){
+        var getAllMarksFromTable = document.getElementsByClassName("marks");
+        var getChosenDisciplineFromSelect = document.getElementById("Mark_Id_Discipline").value;
+        var marksTable = Array.from(getAllMarksFromTable);
+        marksTable.forEach(element => {
+            //element == tr
+            if(element.id != "Mark_Table_Top"){
+                if(getChosenDisciplineFromSelect != "removeNone" && element.id != getChosenDisciplineFromSelect){
+                    element.style.display = "none";
+                }
+                else {
+                    element.style.display = "table-row";
+                }
+            }
+        });
+    }
+</script>
 
-<form action="/mark/student/discipline" method="POST">
-    <p>
-        <label for="Mark_Id_Discipline">discipline ?</label>
-        <select name="Mark_Id_Discipline" id="Mark_Id_Discipline">
-            <option value="1">Mathematics</option>
-            <option value="2">French</option>
-            <option value="3">Biology</option>
-            <option value="4">Science</option>
-            <option value="5">English</option>
-        </select>
-        <input type="submit" />
-    </p>
-</form>
-<table>
-    <tr>
+<h1>Marks</h1>
+<label for="Mark_Id_Discipline">discipline ?</label>
+<select name="Mark_Id_Discipline" id="Mark_Id_Discipline" onchange="displayOnlyDisciplineMarks()">
+    <option value="mathematics">Mathematics</option>
+    <option value="french">French</option>
+    <option value="biology">Biology</option>
+    <option value="science">Science</option>
+    <option value="english">English</option>
+    <option value="removeNone">Tous</option>
+</select>
+<table id="Marks_Table">
+    <tr id="Marks_Table_Top">
         <th>mark</th>
         <th>discipline</th>
     </tr>
-
     <% if(marksData.length!=0){ var i=1; marksData.forEach(function(data){ %>
-        <tr>
-            <td>
-                <%=data.Mark_Value %>
-            </td>
-            <td>
-                <%= disciplines[data.Mark_Id_Discipline]%>
-            </td>
+        <tr class="marks" id=<%= disciplines[data.Mark_Id_Discipline]%>>
+            <td><%=data.Mark_Value %></td>
+            <td><%= disciplines[data.Mark_Id_Discipline]%></td>
         </tr>
         <% i++; }) %>
-            <% } else{ %>
-                <tr>
-                    <td colspan="7">No Data Found</td>
-                </tr>
-                <% } %>
+    <% } else{ %>
+        <tr>
+            <td colspan="7">No Data Found</td>
+        </tr>
+    <% } %>
 </table>

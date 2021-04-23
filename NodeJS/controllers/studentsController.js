@@ -30,7 +30,6 @@ const studentLogIn  = (request, result, next) => {
           }
        });
     } else {
-       console.log(request.method);
        result.render('./connect/connectHeader.ejs',{message: message});
     } 
 };
@@ -38,7 +37,6 @@ const studentDashboard = (req, res, next) => {
            
     var user =  req.session.user,
     userId = req.session.userId;
-    console.log('user id = '+userId);
     if(userId == null){
        res.redirect("/");
        return;
@@ -68,15 +66,15 @@ const studentProfile = (req, res) => {
 const studentMarksDisplayById = (request, result, next) => {
    
    var userId = request.session.userId;
-   console.log('user marks id= '+userId);
    if(userId == null){
       result.redirect("/");
       return;
    }
    var sql="SELECT * FROM `mark` WHERE `Mark_Id_Student`='"+userId+"'";
-   database.query(sql, function (err, data, fields) {
+   var sql2="SELECT * FROM discipline";
+   database.query(sql, sql2, function (err, data, data2, fields) {
       if (err) throw err;
-      result.render('./student/studentMarksDisplay.ejs', { title: 'Marks', marksData: data});
+      result.render('./student/studentMarksDisplay.ejs', { title: 'Marks', test: 'test', marksData: data, disData: data2});
    });
 };
 
@@ -84,9 +82,6 @@ const studentMarksDisplayByDiscipline = (request, result, next) => {
    
    var userId = request.session.userId;
    var markIdDiscipline = request.body.Mark_Id_Discipline;
-   console.log('user marks id= '+userId);
-   console.log('user discipline id= '+markIdDiscipline);
-
    if(userId == null){
       result.redirect("/");
       return;
