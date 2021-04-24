@@ -1,5 +1,6 @@
 
-var database = require('../models/database');
+var database = require('../../models/database');
+
 
 const teacherIndex =  (request, result, next) => {
     var message = '';
@@ -27,12 +28,12 @@ const teacherLogIn  = (request, result, next) => {
           }
           else{
              message = 'Wrong Credentials.';
-             result.render('./connect/connectHeader.ejs',{message: message});
+             result.render('./connect/header.ejs',{message: message});
           }
        });
     } else {
        console.log(request.method);
-       result.render('./connect/connectHeader.ejs',{message: message});
+       result.render('./connect/header.ejs',{message: message});
     } 
 };
 
@@ -46,7 +47,7 @@ const teacherProfile = (req, res) => {
  
     var sql="SELECT * FROM `teacher` WHERE `T_Id`='"+userId+"'";          
     database.query(sql, function(err, result){  
-       res.render('./teacher/teacherProfile',{data:result});
+       res.render('./teacher/profile',{data:result});
     });
 };
 
@@ -63,7 +64,7 @@ const teacherDashboard = (req, res, next) => {
     var sql="SELECT * FROM `teacher` WHERE `T_Id`='"+userId+"'";
  
     database.query(sql, function(err, results){
-       res.render('./teacher/teacherDashboard.ejs', {user:user});    
+       res.render('./teacher/dashboard.ejs', {user:user});    
     });       
 };
 module.exports = {

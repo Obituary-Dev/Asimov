@@ -1,5 +1,5 @@
 
-<%- include ("./studentHeader") -%>
+<%- include ("./header") -%>
 
 <script>
     function displayOnlyDisciplineMarks(){
@@ -19,28 +19,43 @@
         });
     }
 </script>
+ 
 
 <h1>Marks</h1>
+
+<% 
+// put unique disciplines (data.Dis_Name) in a table, then to iterate through it in order to display them only once in html select
+var lstDiscipline = [];
+marksData.forEach(data => {
+    if(!lstDiscipline.includes(data.Dis_Name)){
+        lstDiscipline.push(data.Dis_Name);
+    }
+});
+%>
+
 <label for="Mark_Id_Discipline">discipline ?</label>
 <select name="Mark_Id_Discipline" id="Mark_Id_Discipline" onchange="displayOnlyDisciplineMarks()">
-    <option value="mathematics">Mathematics</option>
-    <option value="french">French</option>
-    <option value="biology">Biology</option>
-    <option value="science">Science</option>
-    <option value="english">English</option>
-    <option value="removeNone">Tous</option>
+    <option value="removeNone">All</option>
+    <% if(lstDiscipline.length!=0){ var i=1; lstDiscipline.forEach( dis => { %>
+        <option value=<%= dis %>><%= dis %></option>
+    <% i++; }) %>
+    <% } else{ %>
+        <option value="undefined">No Data Found</option>
+    <% } %>
 </select>
+
+
 <table id="Marks_Table">
     <tr id="Marks_Table_Top">
         <th>mark</th>
         <th>discipline</th>
     </tr>
     <% if(marksData.length!=0){ var i=1; marksData.forEach(function(data){ %>
-        <tr class="marks" id=<%= disciplines[data.Mark_Id_Discipline]%>>
-            <td><%=data.Mark_Value %></td>
-            <td><%= disciplines[data.Mark_Id_Discipline]%></td>
+        <tr class="marks" id=<%= data.Dis_Name%>>
+            <td><%= data.Mark_Value %></td>
+            <td><%= data.Dis_Name %></td>
         </tr>
-        <% i++; }) %>
+    <% i++; }) %>
     <% } else{ %>
         <tr>
             <td colspan="7">No Data Found</td>

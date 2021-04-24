@@ -1,6 +1,4 @@
 const express = require("express");
-const marksController = require("./controllers/marksController");
-const usersController = require("./controllers/usersController");
 const router = require('./routes/router');
 var app = express();
 var session = require('express-session');

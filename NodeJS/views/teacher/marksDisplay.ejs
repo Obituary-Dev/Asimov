@@ -1,0 +1,103 @@
+<%- include ("./header") -%>
+
+<h1>Marks</h1>
+
+<table>
+    <tr>
+        <th>mark </th>&nbsp;
+        <th>student firstname </th>&nbsp;
+        <th>student lastname </th>&nbsp;
+        <th>promotion </th>&nbsp;
+        <th>discipline </th>&nbsp;
+        <th>delete </th>
+    </tr>
+
+    <% if(marksData.length!=0){ var i=1; marksData.forEach(function(data){ %>
+        <tr>
+            <td>
+                <%=data.Mark_Value %>
+            </td>
+            <td>
+                <%=data.Stu_Firstname %>
+            </td>
+            <td>
+                <%=data.Stu_Lastname %>
+            </td>
+            <td>
+                <%=data.Promo_libelle %>
+            </td>
+
+            <td>
+                <%= data.Dis_Name %>
+            </td>
+            <td><a href="/mark/teacher/delete/<%=data.Mark_Id%>">Delete</a></td>
+        </tr>
+        <% i++; }) %>
+    <% } else{ %>
+        <tr>
+            <td colspan="7">No Data Found</td>
+        </tr>
+    <% } %>
+</table>
+
+<% 
+// put unique disciplines (data.Dis_Name) in a table, then to iterate through it in order to display them only once in html select
+var lstDisciplineName = [];
+var lstDisciplineId = [];
+
+var lstStudentName = [];
+var lstStudentId = [];
+
+var lstPromoName = [];
+var lstPromoId = [];
+
+marksData.forEach(data => {
+    if(!lstDisciplineName.includes(data.Dis_Name)){
+        lstDisciplineName.push(data.Dis_Name);
+        lstDisciplineId.push(data.Dis_Id);
+    }
+    if(!lstStudentName.includes(data.Stu_Firstname)){
+        lstStudentName.push(data.Stu_Firstname);
+        lstStudentId.push(data.Stu_Id);
+    }
+    if(!lstPromoName.includes(data.Promo_libelle)){
+        lstPromoName.push(data.Promo_libelle);
+        lstPromoId.push(data.Promo_Id);
+    }
+});
+%> 
+
+<form action="/mark/teacher/add" method="post">
+    <p>
+        <label for="Mark_Value"> grade ?</label>
+        <input type="text" name="Mark_Value" id="Mark_Value" autofocus required />
+        <label for="Mark_Id_Discipline">discipline ?</label>
+        <select name="Mark_Id_Discipline" id="Mark_Id_Discipline">
+            <% if(lstDisciplineName.length!=0){ var i=0; lstDisciplineName.forEach( dis => { %>
+                <option value=<%= lstDisciplineId[i] %>><%= dis %></option>
+            <% i++;}) %>
+            <% } else{ %>
+                <option value="undefined">No Data Found</option>
+            <% } %>
+        </select>
+        <label for="Mark_Id_Student">student ?</label>
+        <select name="Mark_Id_Student" id="Mark_Id_Student">
+            <% if(lstStudentName.length!=0){ var i=0; lstStudentName.forEach( stuName => { %>
+                <option value=<%= lstStudentId[i] %>><%= stuName %></option>
+            <% i++;}) %>
+            <% } else{ %>
+                <option value="undefined">No Data Found</option>
+            <% } %>
+        </select>
+        <label for="Mark_Id_Promotion">promotion ?</label>
+        <select name="Mark_Id_Promotion" id="Mark_Id_Promotion">
+            <% if(lstPromoName.length!=0){ var i=0; lstPromoName.forEach( proName => { %>
+                <option value=<%= lstPromoId[i] %>><%= proName %></option>
+            <% i++;}) %>
+            <% } else{ %>
+                <option value="undefined">No Data Found</option>
+            <% } %>
+        </select>
+        <input type="submit" />
+    </p>
+</form>

@@ -1,8 +1,8 @@
-var database = require('../models/database');
+var database = require('../../models/database');
 
 const studentIndex =  (request, result, next) => {
     var message = '';
-    result.render('./connect/connectStudent',{message: message});
+    result.render('./connect/student',{message: message});
 };
  
 const studentLogIn  = (request, result, next) => {
@@ -26,11 +26,11 @@ const studentLogIn  = (request, result, next) => {
           }
           else{
              message = 'Wrong Credentials.';
-             result.render('./connect/connectHeader.ejs',{message: message});
+             result.render('./connect/header.ejs',{message: message});
           }
        });
     } else {
-       result.render('./connect/connectHeader.ejs',{message: message});
+       result.render('./connect/header.ejs',{message: message});
     } 
 };
 const studentDashboard = (req, res, next) => {
@@ -45,7 +45,7 @@ const studentDashboard = (req, res, next) => {
     var sql="SELECT * FROM `student` WHERE `Stu_Id`='"+userId+"'";
  
     database.query(sql, function(err, results){
-       res.render('./student/studentDashboard.ejs', {user:user});    
+       res.render('./student/dashboard.ejs', {user:user});    
     });       
 };
       
@@ -59,7 +59,7 @@ const studentProfile = (req, res) => {
  
     var sql="SELECT * FROM `student` WHERE `Stu_Id`='"+userId+"'";          
     database.query(sql, function(err, result){  
-       res.render('./student/studentProfile.ejs',{data:result});
+       res.render('./student/profile.ejs',{data:result});
     });
 };
 
@@ -70,11 +70,11 @@ const studentMarksDisplayById = (request, result, next) => {
       result.redirect("/");
       return;
    }
-   var sql="SELECT * FROM `mark` WHERE `Mark_Id_Student`='"+userId+"'";
-   var sql2="SELECT * FROM discipline";
-   database.query(sql, sql2, function (err, data, data2, fields) {
+   var sql="SELECT * FROM `mark`, `discipline` WHERE `Dis_Id` = `Mark_Id_Discipline` AND `Mark_Id_Student`='"+userId+"' GROUP BY `Mark_Id` ORDER BY `Dis_Name`";
+   database.query(sql, function (err, data, fields) {
       if (err) throw err;
-      result.render('./student/studentMarksDisplay.ejs', { title: 'Marks', test: 'test', marksData: data, disData: data2});
+      console.log(data);
+      result.render('./student/marksDisplay.ejs', { title: 'Marks', test: 'test', marksData: data});
    });
 };
 
@@ -86,13 +86,12 @@ const studentMarksDisplayByDiscipline = (request, result, next) => {
       result.redirect("/");
       return;
    }
-   var sql="SELECT * FROM `mark` WHERE `Mark_Id_Student`='"+userId+"' AND `Mark_Id_Discipline`='"+markIdDiscipline+"'";
+   var sql="SELECT * FROM `mark`, `discipline` WHERE `Dis_Id` = `Mark_Id_Discipline` AND `Mark_Id_Student`='"+userId+"' AND `Mark_Id_Discipline`='"+markIdDiscipline+"' GROUP BY `Dis_Name` ORDER BY `Dis_Name`";
    database.query(sql, function (err, data, fields) {
       if (err) throw err;
-      result.render('./student/studentMarksDisplay.ejs', { title: 'Marks', marksData: data});
+      result.render('./student/marksDisplay.ejs', { title: 'Marks', marksData: data});
    });
 };
-
 
 module.exports = {
     studentIndex,

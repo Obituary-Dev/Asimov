@@ -3,7 +3,7 @@ var database = require('../models/database');
 
 const userIndex =  (request, result, next) => {
    var message = '';
-   result.render('./connect/connectHeader.ejs',{message: message});
+   result.render('./connect/header.ejs',{message: message});
 }; 
 
 const userLogOut = (req,res) => {
