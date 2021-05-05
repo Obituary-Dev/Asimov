@@ -1,13 +1,35 @@
 var database = require('../../models/database');
 
 const studentsDisplay = (request, result, next) => {
-    var sql='SELECT * FROM student';
-    database.query(sql, function (err, data, fields) {
-        if (err) throw err;
-        result.render('./teacher/studentsDisplay.ejs', { title: 'Students', studentsData: data});
-      });
+  var role = request.session.role;
+  
+  var sql='SELECT * FROM student, promotion WHERE Stu_Id_Promotion = Promo_Id GROUP BY Stu_Id';
+  database.query(sql, function (err, data, fields) {
+      if (err) throw err;
+      if(role == 2){
+      result.render('./teacher/studentsDisplay.ejs', {studentsData: data});}
+      else if(role == 3){
+      result.render('./teacher_plus/studentsAdd.ejs', {studentsData: data});
+      console.log(data);
+      }
+      else {
+        result.redirect("/");
+      }
+    });
 };
 
+const studentAdd = (request, result, next) => {
+
+  const studentToAdd = [request.body.Stu_Firstname, request.body.Stu_Lastname, request.body.Stu_Username, request.body.Stu_Password, request.body.Stu_Id_Promotion]
+  var sql = 'INSERT INTO student(Stu_Firstname, Stu_Lastname, Stu_Username, Stu_Password, Stu_Id_Promotion) VALUES (?)';
+  database.query(sql, [studentToAdd], function (err, data) { 
+      if (err) throw err;
+      console.log("data is inserted successfully "); 
+  });
+ result.redirect('/students/teacher');  
+}; 
+
 module.exports = {
-  studentsDisplay
+  studentsDisplay,
+  studentAdd
 }

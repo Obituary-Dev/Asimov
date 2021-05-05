@@ -4,10 +4,27 @@
 
 <table>
     <tr>
-        <th>Nom </th>
-        <th>Prénom </th>
-        <th>classe </th>
-        <th>delete </th>
-        <th>edit </th>
+        <th>Last Name </th>
+        <th>First Name </th>
+        <th>Promotion </th>
     </tr>
+
+    <% if(studentsData.length!=0){ var i=1; studentsData.forEach(function(data){ %>
+        <tr>
+            <td>
+                <%=data.Stu_Lastname %>
+            </td>
+            <td>
+                <%=data.Stu_Firstname %>
+            </td>
+            <td>
+                <%=data.Promo_libelle %>
+            </td>
+        </tr> 
+    <% i++; }) %>
+    <% } else{ %>
+        <tr>
+            <td colspan="7">No Data Found</td>
+        </tr>
+    <% } %>
 </table>

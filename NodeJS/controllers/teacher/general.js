@@ -16,9 +16,10 @@ const teacherLogIn  = (request, result, next) => {
        var name= post.user_name;
        var pass= post.password;
       
-       var sql="SELECT T_Id, T_Firstname, T_Lastname, T_Username FROM `teacher` WHERE `T_Username`='"+name+"' and T_Password = '"+pass+"'";                           
+       var sql="SELECT * FROM `teacher` WHERE `T_Username`='"+name+"' and T_Password = '"+pass+"'";                           
        database.query(sql, function(err, results){      
           if(results.length){
+             request.session.role = results[0].T_Id_Role;
              request.session.userId = results[0].T_Id;
              request.session.user = results[0];
              console.log('test ' + results[0].T_Id);

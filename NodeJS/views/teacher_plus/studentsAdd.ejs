@@ -1,0 +1,38 @@
+
+<%- include ("./../teacher/studentsDisplay") -%>
+
+<% 
+var lstPromoName = [];
+var lstPromoId = [];
+
+studentsData.forEach(data => {
+    if(!lstPromoName.includes(data.Promo_libelle)){
+        lstPromoName.push(data.Promo_libelle);
+        lstPromoId.push(data.Promo_Id);
+    }
+});
+%> 
+
+<form action="/student/teacher_plus/add" method="post">
+    <p>
+        <label for="Stu_Firstname"> First name ?</label>
+        <input type="text" name="Stu_Firstname" id="Stu_Firstname" autofocus required />
+        <label for="Stu_Lastname"> Last name ?</label>
+        <input type="text" name="Stu_Lastname" id="Stu_Lastname" autofocus required />
+        <label for="Stu_Username"> Username ?</label>
+        <input type="text" name="Stu_Username" id="Stu_Username" autofocus required />
+        <label for="Stu_Password"> Password ?</label>
+        <input type="text" name="Stu_Password" id="Stu_Password" autofocus required />
+        <label for="Stu_Id_Promotion">Promotion ?</label>
+        <label for="Stu_Id_Promotion">promotion ?</label>
+        <select name="Stu_Id_Promotion" id="Stu_Id_Promotion">
+            <% if(lstPromoName.length!=0){ var i=0; lstPromoName.forEach( proName => { %>
+                <option value=<%= lstPromoId[i] %>><%= proName %></option>
+            <% i++;}) %>
+            <% } else{ %>
+                <option value="undefined">No Data Found</option>
+            <% } %>
+        </select>
+        <input type="submit" />
+    </p>
+</form>

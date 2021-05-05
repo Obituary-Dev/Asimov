@@ -32,9 +32,10 @@ const s_generalController = require('../controllers/student/general');
  * - A FAIRE voir un graphique de ses notes 
  * 
  * PROF
- * - voir les notes de ses étudiants 
- * - ajouter des notes à ses étudiants 
+ * - voir les notes des étudiants dans ses matières [x] 
+ * - ajouter des notes aux étudiants dans ses matières [x]
  * + ajouter des notes à ses étudiants dans ses matières
+ * + voir les notes de ses étudiants dans ses matières
  * 
  * PROF SPE = PROF +
  * - creer des élèves et leur affilier une classe
@@ -57,6 +58,8 @@ router.get('/logout', u_usersController.userLogOut);
 // Director routes
 
 // Teacher+ routes
+router.post('/student/teacher_plus/add', urlencodedParser, t_studentsController.studentAdd );
+
 
 // Teacher routes
 router.get('/teacher', t_generalController.teacherIndex);
@@ -67,7 +70,6 @@ router.get('/marks/teacher', t_marksController.marksDisplay);
 router.post('/mark/teacher/add', urlencodedParser, t_marksController.markAdd);
 router.get('/mark/teacher/delete/:id', t_marksController.markDelete);
 router.get('/students/teacher', t_studentsController.studentsDisplay);
-
 // Student routes
 router.get('/student', s_generalController.studentIndex);
 router.post('/login/student', s_generalController.studentLogIn);
