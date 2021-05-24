@@ -1,0 +1,30 @@
+
+<%- include ("./header") -%>
+
+<h1>Disciplines</h1>
+
+<table>
+    <tr>
+        <th>discipline </th>&nbsp;
+    </tr>
+
+    <% if(disData.length!=0){ var i=1; disData.forEach(function(data){ %>
+        <tr>
+            <td>
+                <%= data.Dis_Name %>
+            </td>
+        </tr>
+        <% i++; }) %>
+    <% } else{ %>
+        <tr>
+            <td colspan="7">No Data Found</td>
+        </tr>
+    <% } %>
+</table>
+
+<form action="/discipline/director/add" method="post"> 
+
+    <label for="Dis_Name"> Discipline ?</label>
+    <input type="text" name="Dis_Name" id="Dis_Name" autofocus required />
+    <input type="submit" />
+</form>

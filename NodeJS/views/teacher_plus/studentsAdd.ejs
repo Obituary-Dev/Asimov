@@ -24,7 +24,6 @@ studentsData.forEach(data => {
         <label for="Stu_Password"> Password ?</label>
         <input type="text" name="Stu_Password" id="Stu_Password" autofocus required />
         <label for="Stu_Id_Promotion">Promotion ?</label>
-        <label for="Stu_Id_Promotion">promotion ?</label>
         <select name="Stu_Id_Promotion" id="Stu_Id_Promotion">
             <% if(lstPromoName.length!=0){ var i=0; lstPromoName.forEach( proName => { %>
                 <option value=<%= lstPromoId[i] %>><%= proName %></option>

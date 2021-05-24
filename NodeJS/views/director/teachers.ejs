@@ -1,0 +1,77 @@
+<%- include ("./header") -%>
+
+
+<h1>Teachers</h1>
+
+<table>
+    <tr>
+        <th>firstname </th>&nbsp;
+        <th>lastname </th>&nbsp;
+        <th>username </th>&nbsp;
+        <th>password </th>&nbsp;
+        <th>role </th>&nbsp;
+    </tr>
+
+    <% if(teachersData.length!=0){ var i=1; teachersData.forEach(function(data){ %>
+        <tr>
+            <td>
+                <%=data.T_Firstname %>
+            </td>
+            <td>
+                <%=data.T_Lastname %>
+            </td>
+            <td>
+                <%=data.T_Username %>
+            </td>
+            <td>
+                <%=data.T_Password %>
+            </td>
+
+            <td>
+                <%= data.Role_Name %>
+            </td>
+        </tr>
+        <% i++; }) %>
+    <% } else{ %>
+        <tr>
+            <td colspan="7">No Data Found</td>
+        </tr>
+    <% } %>
+</table>
+
+<% 
+// put unique disciplines (data.Dis_Name) in a table, then to iterate through it in order to display them only once in html select
+var lstTeachersRoleName = [];
+var lstTeachersRoleId = [];
+
+teachersData.forEach(data => {
+    if(!lstTeachersRoleName.includes(data.Role_Name)){
+        lstTeachersRoleName.push(data.Role_Name);
+        lstTeachersRoleId.push(data.T_Id_Role);
+    }
+});
+%> 
+
+
+<form action="/teachers/director/add" method="post">
+    <p>
+        <label for="T_Firstname"> firstname ?</label>
+        <input type="text" name="T_Firstname" id="T_Firstname" autofocus required />
+        <label for="T_Lastname"> lastname ?</label>
+        <input type="text" name="T_Lastname" id="T_Lastname" autofocus required />
+        <label for="T_Username"> username ?</label>
+        <input type="text" name="T_Username" id="T_Username" autofocus required />
+        <label for="T_Password"> password ?</label>
+        <input type="text" name="T_Password" id="T_Password" autofocus required />
+        <label for="T_Id_Role">role ?</label>
+        <select name="T_Id_Role" id="T_Id_Role">
+            <% if(lstTeachersRoleName.length!=0){ var i=0; lstTeachersRoleName.forEach( role => { %>
+                <option value=<%= lstTeachersRoleId[i] %>><%= role %></option>
+            <% i++;}) %>
+            <% } else{ %>
+                <option value="undefined">No Data Found</option>
+            <% } %>
+        </select>
+        <input type="submit" />
+    </p>
+</form>

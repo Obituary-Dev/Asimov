@@ -1,12 +1,12 @@
-
 var database = require('../../models/database');
 
-
+// teacher connection section
 const teacherIndex =  (request, result, next) => {
     var message = '';
     result.render('./connect/teacher',{message: message});
 }; 
 
+// allows teacher to connect if they put the right credentials according to db and redirects to their dashboard
 const teacherLogIn  = (request, result, next) => {
     var message = '';
     var sess = request.session; 
@@ -38,8 +38,9 @@ const teacherLogIn  = (request, result, next) => {
     } 
 };
 
+// shows profile with first/lastname and username 
 const teacherProfile = (req, res) => {
-
+    var role = req.session.role;
     var userId = req.session.userId;
     if(userId == null){
        res.redirect("/");
@@ -48,12 +49,19 @@ const teacherProfile = (req, res) => {
  
     var sql="SELECT * FROM `teacher` WHERE `T_Id`='"+userId+"'";          
     database.query(sql, function(err, result){  
-       res.render('./teacher/profile',{data:result});
+       if(role < 4){
+         res.render('./teacher/profile',{data:result});
+       }else if(role == 4){
+         res.render('./director/profile',{data:result});
+
+       }
     });
 };
 
+// shows teacher dashboard 
 const teacherDashboard = (req, res, next) => {
            
+    var role = req.session.role;
     var user =  req.session.user,
     userId = req.session.userId;
     console.log('user id = '+userId);
@@ -65,9 +73,19 @@ const teacherDashboard = (req, res, next) => {
     var sql="SELECT * FROM `teacher` WHERE `T_Id`='"+userId+"'";
  
     database.query(sql, function(err, results){
-       res.render('./teacher/dashboard.ejs', {user:user});    
+       if(role < 4){
+         res.render('./teacher/dashboard.ejs', {user:user});    
+       }
+       else if(role == 4){
+         res.render('./director/dashboard.ejs', {user:user});    
+       }
+       else{
+         res.redirect("/");
+       }
     });       
 };
+
+// exports it so the router can access it
 module.exports = {
     teacherIndex,
     teacherLogIn,

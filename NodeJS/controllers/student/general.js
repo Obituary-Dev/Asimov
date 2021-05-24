@@ -1,10 +1,11 @@
 var database = require('../../models/database');
 
+// shows connect page by default
 const studentIndex =  (request, result, next) => {
     var message = '';
     result.render('./connect/student',{message: message});
 };
- 
+// verifies the credentials using sql query and redirects to the dashboard if connection OK, else, resends to the log in page
 const studentLogIn  = (request, result, next) => {
     var message = '';
     var sess = request.session; 
@@ -33,6 +34,8 @@ const studentLogIn  = (request, result, next) => {
        result.render('./connect/header.ejs',{message: message});
     } 
 };
+
+// says hello when connected
 const studentDashboard = (req, res, next) => {
            
     var user =  req.session.user,
@@ -48,7 +51,9 @@ const studentDashboard = (req, res, next) => {
        res.render('./student/dashboard.ejs', {user:user});    
     });       
 };
-      
+
+
+// sends student data to ejs so it can display profile section properly
 const studentProfile = (req, res) => {
 
     var userId = req.session.userId;
@@ -63,6 +68,7 @@ const studentProfile = (req, res) => {
     });
 };
 
+// displays ejs file after sending the student grades sorted by the student id
 const studentMarksDisplayById = (request, result, next) => {
    
    var userId = request.session.userId;
@@ -78,6 +84,7 @@ const studentMarksDisplayById = (request, result, next) => {
    });
 };
 
+// allows the student to choose which discipline grade they want to see
 const studentMarksDisplayByDiscipline = (request, result, next) => {
    
    var userId = request.session.userId;
@@ -93,6 +100,7 @@ const studentMarksDisplayByDiscipline = (request, result, next) => {
    });
 };
 
+// exports it so the router can access it
 module.exports = {
     studentIndex,
     studentLogIn,

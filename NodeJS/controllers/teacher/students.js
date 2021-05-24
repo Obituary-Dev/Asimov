@@ -1,5 +1,6 @@
 var database = require('../../models/database');
 
+// gives a list of data gotten from db to ejs file where it will be handled and shown in an html table
 const studentsDisplay = (request, result, next) => {
   var role = request.session.role;
   
@@ -12,12 +13,16 @@ const studentsDisplay = (request, result, next) => {
       result.render('./teacher_plus/studentsAdd.ejs', {studentsData: data});
       console.log(data);
       }
+      else if(role == 4){
+        result.render();
+      }
       else {
         result.redirect("/");
       }
     });
 };
 
+// adds a student from ejs to db 
 const studentAdd = (request, result, next) => {
 
   const studentToAdd = [request.body.Stu_Firstname, request.body.Stu_Lastname, request.body.Stu_Username, request.body.Stu_Password, request.body.Stu_Id_Promotion]
@@ -29,6 +34,7 @@ const studentAdd = (request, result, next) => {
  result.redirect('/students/teacher');  
 }; 
 
+// exports it so the router can access it
 module.exports = {
   studentsDisplay,
   studentAdd
